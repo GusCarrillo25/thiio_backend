@@ -1,3 +1,29 @@
+## Set up Instructions
+
+Before run this project be sure you have installed docker.
+Once you have Docker installed, run the following commands in the terminal
+
+    - docker pull mysql:lates   -> this command will download the latest image available for mysql.
+
+    - docker pull phpmyadmin:latest -> this command will download the latest image available for phpmyadmin, to view the        database graphically.
+
+    - docker run -d --name mysql-container -e MYSQL_ROOT_PASSWORD=12345 -p 5432:3306 mysql:latest -> this command creates a docker container with name "mysql-container", creates the root user and asigns the password 12345, take the port 5432, and asigns the port 3306 that uses mysql.
+
+    - docker run -d --name phpmyadmin-container --link mysql-container:db -p 8080:80 phpmyadmin:latest -> this command will create a docker container for phpmyadmin and linked it to the mysql-container with the port 80, this will show the phpmyadmin in the browser with the following address: http://localhost:8080/. you can login with root as user and 12345 as password.
+
+If you can't see phpmyadmin in the browser, you must run this command and configure the Laravel .env file:
+    - docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql:container -> this command will show the IP address for the mysql-container. Then you must paste this IP address in DB_HOST= 'paste your address'.
+
+In the laravel file .env, must in the variable  DB_DATABASE=thiio, this is the name for the database. You need to put root in the DB_USERNAME, and 12345 in DB_PASSWORD too. 
+
+Once you have the enviroment configured, you must run the laravel command inside the folder of this project:
+    - php artisan migrate -> this commando will run the migrations needed for this project, and will create the database and tables where will be the information about users.
+
+The Backend is ready to use!
+
+##
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
